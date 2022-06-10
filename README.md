@@ -11,3 +11,34 @@ Now you sit in your office and open the web browser on your computer. You type i
 
 ## Setup
 A description will appear in the next few days ^^
+
+To ensure everything is working fine, you can run the following commands as root or with sudo permissions.
+### Steps needed to do once:
+1) Place the folder "device_counter" into the file system. I like using "Desktop" of the user I'm logged in, but you can choose anyone.
+2) Go into the folder "device_counter" and run `chmod +x setup.sh`.
+3) Now go one folder up. Therefor run `cd ..`.
+4) Get the path of where you place the device_counter folder. To do it, run `pwd` and copy the path that is given.
+5) Switch again into the device_counter folder. You can do it with `cd device_counter`.
+6) Start the Script setup.sh with `./setup.sh`
+7) The script will ask you to input some parameter. It will also ask for the path you copied earlier.
+8) After the script finished, you are ready to go.
+
+### Steps needed to do every time:
+1) To run the WI-FI Scanner, you will first have to plug in an external Wi-Fi adapter, for example via USB.
+2) Open a command prompt.
+3) Then run the script wifi_start_scan.sh. You can do it with `./wifi_start_scan.sh`.
+4) The command prompt needs to run the whole time you're scanning.
+5) Open a new command prompt.
+6) Start the graphic representation with `./launch_website.sh`
+7) To see the Website, go to 127.0.0.1:5000 on your machine or in your network, go to the IP:5000 of the device the counter is running on.
+8) Congratulations, you're done and now counting the devices in your area.
+
+### How to stop scanning?
+1) Close the two command prompts you opened at the start of scanning.
+2) Now only the cronjob is still running. If you aren't using the machine the device counter is running on only for the counter, you can now also stop the cronjob. Do the following to stop it:
+3) Open a command prompt.
+4) Type in `crontab -e`.
+5) Go to the end of the file and look for something like this: "Here will be the crontab code from the setup.sh script".
+6) Go to the beginning of the line and type `#`. The line now should change the color and look like `#ToEnter`.
+7) Save the file and exit.
+8) Every time you would like to run the script again, remove the `#` in front of the line again and save the file. A `#` is used to comment out content. If the line in the crontab file is commented out, it will be ignored by crontab.
