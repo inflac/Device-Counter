@@ -11,6 +11,7 @@ Now you sit in your office and open the web browser on your computer. You type i
 
 ## Setup
 A description will appear in the next few days ^^
+Note to myself. Install flask via setup.sh? Where in the readme should i speak about what the setup.sh is doing? :)
 
 To ensure everything is working fine, you can run the following commands as root or with sudo permissions.
 ### Steps needed to do once:
