@@ -56,6 +56,7 @@ sleep 1
 echo -e '\e[33mDone'
 
 ##Read in path
+echo -e '\e[34m[*]      \e[32mEnter Location of device_counter folder	\e[34m[*]'
 LOCAT=$(pwd)
 echo -e Using $LOCAT as the path to the device_counter folder
 sleep 1
