@@ -56,25 +56,16 @@ sleep 1
 echo -e '\e[33mDone'
 
 ##Read in path
-echo -e '\e[34m[*]      \e[32mEnter Location of device_counter folder	\e[34m[*]'
-read_path() {
-echo -e '\e[0mEnter the path of the '"'device_counter"'" folder: \nExample: /home/user/Desktop/device_counter/'
-read folder_path
-echo -e '\e[31m########################################\e[0m'
-echo -e "You entered this path: \e[31m $folder_path \e[0m"
-echo -e "Please check if you entered a path from the root with a slash at the begining and the end!"
-echo -e '\e[31m########################################\e[0m'
-read -p "Would you like to edit the path (y/n)?" CORR
-  if [ "$CORR" = "n" ]; then
-    echo -e '\e[33mDone'
-  else
-    read_path
-  fi
-}
-read_path
+LOCAT=$(pwd)
+echo -e Using $LOCAT as the path to the device_counter folder
+sleep 1
+echo -e '\e[33mDone'
 
 ##Change path in files
 echo -e '\e[34m[*]      \e[32mAdjust path in files   \e[34m[*]'
+#LOCAT is the path to use. Maybe <sed -i 's/search_string/replace_string/' filename> can help.
+#It could look like <sed -i 's/current path/$LOCAT/' all files>
+#TODO
 
 sleep 1
 echo -e '\e[33mDone'
