@@ -10,8 +10,7 @@ Now you sit in your office and open the web browser on your computer. You type i
 * Don't the MAC-address of mobile devices change after some time? Because of many mobile devices have anti tracking mechanisms, they do not broadcast their real and unique MAC-address. Most often, mobile devices broadcast fake addresses that change after some time. But still the change rhythm is long enough to count a device only once if the scanner runs for example just a couple of hours.
 
 ## Setup
-A description will appear in the next few days ^^
-Note to myself. Install flask via setup.sh? Where in the readme should i speak about what the setup.sh is doing? :)
+Note to myself: User input is not needed. Why can't the script use pwd itself? Where in the readme should i speak about what the setup.sh is doing? :)
 
 To ensure everything is working fine, you can run the following commands as root or with sudo permissions.
 ### Steps needed to do once:
