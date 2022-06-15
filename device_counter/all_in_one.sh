@@ -1,4 +1,5 @@
 #!/bin/bash
+#/home/kali/Desktop/device_counter
 bluetoothctl --timeout 30 scan on > /home/kali/Desktop/device_counter/btfinder/BTCapture.txt
 
 #Bluetooth
