@@ -16,12 +16,8 @@ To ensure everything is working fine, you can run the following commands as root
 ### Steps needed to do once:
 1) Place the folder "device_counter" into the file system. I like using "Desktop" of the user I'm logged in, but you can choose anyone.
 2) Go into the folder "device_counter" and run `chmod +x setup.sh`.
-3) Now go one folder up. Therefor run `cd ..`.
-4) Get the path of where you place the device_counter folder. To do it, run `pwd` and copy the path that is given.
-5) Switch again into the device_counter folder. You can do it with `cd device_counter`.
-6) Start the Script setup.sh with `./setup.sh`
-7) The script will ask you to input some parameter. It will also ask for the path you copied earlier.
-8) After the script finished, you are ready to go.
+3) Start the Script setup.sh with `./setup.sh`
+4) After the script finished, you are ready to go.
 
 ### Steps needed to do every time:
 1) To run the WI-FI Scanner, you will first have to plug in an external Wi-Fi adapter, for example via USB.
