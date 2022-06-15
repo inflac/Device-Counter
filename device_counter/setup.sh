@@ -43,8 +43,8 @@ fi
 
 ##install dependencies
 echo -e '\e[34m[*]      \e[32mInstalling Dependencies			\e[34m[*]'
-#apt-get install aircrack-ng -y > /dev/null
-#pip install -U Flask &> /dev/null
+apt-get install aircrack-ng -y > /dev/null
+pip install -U Flask &> /dev/null
 echo -e '\e[33mDone'
 
 ##adjust permissions for scripts
