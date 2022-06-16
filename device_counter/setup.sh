@@ -108,6 +108,18 @@ sleep 1
 echo -e '\e[33mDone'
 
 
+#Check for backupfolder
+echo -e '\e[34m[*]      \e[32mCheck for backupfolder                            \e[34m[*]\e[0m'
+if ! [ -d "$LOCAT/btfinder/backups" ];then
+   eval mkdir -v $LOCAT/btfinder/backups $VERB1;
+fi
+if ! [ -d "$LOCAT/wififinder/backups" ];then
+   eval mkdir -v $LOCAT/wififinder/backups $VERB1;
+fi
+sleep 1
+echo -e '\e[33mDone'
+
+
 ##Setting up cronjob
 #Removing old cronjob(The sed command realy removes every line with the matching string in it!)
 sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
