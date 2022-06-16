@@ -17,19 +17,46 @@ echo -e '\e[34m[*]	\e[32mReport Bugs : https://github.com/inflac/Device-Counter/
 echo -e '\e[34m[*]	\e[32mCreated By : \e[33mInflac						\e[34m[*]'
 echo -e '\e[34m[*]	\e[32mBased on '"'\e[36mAircrack-ng'"' \e[32m& '"'\e[36mBlue Control'"'				\e[34m[*]'
 echo ''
-echo -e '\e[0mThe Script will do the following things:'
+echo -e 'The Script will do the following things:'
 echo '--> Install aircrack-ng'
 echo '--> Install flask'
 echo '--> Change permissions of the files in the folder "device_counter"'
 echo '--> Edit content of the files in the folder "device_counter"'
 echo ''
 
-read -p "Would you like to start the setup now (y/n)?" CONT
-if [ "$CONT" = "y" ]; then
-  echo "...Starting";
-elif [ "$CONT" = "n" ]; then
-  echo "See you later";
+#Menue
+echo -e '\e[0m|---------------------------------------|'
+echo -e ' Main Menue:                         '
+echo -e ' \e[34m[1]\e[0m Activate Cronjob                '
+echo -e ' \e[34m[2]\e[0m Deactivate Cronjob              '
+echo -e ' \e[34m[3]\e[0m Start full setup                '
+echo -e ' \e[34m[4]\e[0m Start full setup in verbose mode               '
+echo -e '\e[0m|---------------------------------------|'
+read -p 'Enter number:' CONT
+if [ "$CONT" = "1" ]; then
+  echo -e '\e[34m[*]      \e[32mActivating cronjob                   \e[34m[*]\e[0m'
+  LOCAT=$(pwd);
+  crontab -l > newcron;
+  echo "* * * * * ."$LOCAT"/all_in_one.sh" >> newcron;
+  crontab newcron;
+  rm newcron;
+  echo -e '\e[33mDone'
+  sleep 1
   exit 130
+elif [ "$CONT" = "2" ]; then
+  echo -e '\e[34m[*]      \e[32mDeactivating cronjob                   \e[34m[*]\e[0m'
+  sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
+  echo -e '\e[33mDone'
+  sleep 1
+  exit 130
+elif [ "$CONT" = "3" ]; then
+  echo "Starting the full setup";
+  VERB1=">/dev/null"
+  VERB2="&>/dev/null"
+elif [ "$CONT" = "4" ]; then
+  VERB1=''
+  VERB2=''
+  echo "Starting the full setup in verbose mode";
 else
   echo ''
   echo -e '\e[31m########################################\e[0m'
@@ -41,43 +68,54 @@ else
   telnet towel.blinkenlights.nl
 fi
 
-##install dependencies
-echo -e '\e[34m[*]      \e[32mInstalling Dependencies			\e[34m[*]'
-apt-get install aircrack-ng -y > /dev/null
-pip install -U Flask &> /dev/null
+
+##Installing dependencies
+echo -e '\e[34m[*]      \e[32mInstalling dependencies			\e[34m[*]\e[0m'
+#> /dev/null and &> /dev/null
+eval apt-get install aircrack-ng -y $VERB1
+eval pip install -U -v Flask $VERB2
 echo -e '\e[33mDone'
 
-##adjust permissions for scripts
-echo -e '\e[34m[*]      \e[32mAdjusting Permissions				\e[34m[*]'
-chmod +x all_in_one.sh
-chmod +x launch_website.sh
-chmod +x wifi_start_scan.sh
+
+##Adjusting permissions
+echo -e '\e[34m[*]      \e[32mAdjusting permissions				\e[34m[*]'
+eval chmod -v +x all_in_one.sh $VERB1
+eval chmod -v +x launch_website.sh $VERB1
+eval chmod -v +x wifi_start_scan.sh $VERB1
 sleep 1
 echo -e '\e[33mDone'
 
-##Read in path
-echo -e '\e[34m[*]      \e[32mLocation of device_counter folder	\e[34m[*]'
+
+##Adjusting path in files
+echo -e '\e[34m[*]      \e[32mAdjusting path in files			\e[34m[*]\e[0m'
+#Get path to update
 LOCAT=$(pwd)
-echo -e Using $LOCAT as the path to the device_counter folder
-sleep 1
-echo -e '\e[33mDone'
+eval echo -e Using $LOCAT as the path to the device_counter folder $VERB1
 
-##Change path in files
-echo -e '\e[34m[*]      \e[32mAdjust path in files   \e[34m[*]'
-#Read current path of the all_in_one.sh file(line2).
+#Read path of the all_in_one.sh file(line2).
 CURRPATH=$(sed '2q;d' all_in_one.sh)
 CURRPATH="${CURRPATH:1}"
-echo -e $CURRPATH
-echo -e $LOCAT
 
-#update current path with new path in all_in_one.sh
-replace "$CURRPATH" "$LOCAT" -- all_in_one.sh
-replace "$CURRPATH" "$LOCAT" -- launch_website.sh
-replace "$CURRPATH" "$LOCAT" -- wifi_start_scan.sh
-replace "$CURRPATH" "$LOCAT" -- count_sorted.py
+#Update current path with new path in all_in_one.sh
+eval replace -v "$CURRPATH" "$LOCAT" -- all_in_one.sh $VERB2
+eval replace -v "$CURRPATH" "$LOCAT" -- launch_website.sh $VERB2
+eval replace -v "$CURRPATH" "$LOCAT" -- wifi_start_scan.sh $VERB2
+eval replace -v "$CURRPATH" "$LOCAT" -- count_sorted.py $VERB2
 cd web/
-replace "$CURRPATH" "$LOCAT" -- myapp.py
-cd templates/
-replace "$CURRPATH" "$LOCAT" -- index.html
+eval replace -v "$CURRPATH" "$LOCAT" -- myapp.py $VERB2
+sleep 1
+echo -e '\e[33mDone'
+
+
+##Setting up cronjob
+#Removing old cronjob(The sed command realy removes every line with the matching string in it!)
+sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
+
+#Setting up new cronjob
+echo -e '\e[34m[*]      \e[32mSetting up Cronjob                   		\e[34m[*]\e[0m'
+crontab -l > newcron
+echo "* * * * * ."$LOCAT"/all_in_one.sh" >> newcron
+crontab newcron
+rm newcron
 sleep 1
 echo -e '\e[33mDone'
