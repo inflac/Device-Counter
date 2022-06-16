@@ -44,3 +44,5 @@ To ensure everything is working fine, you should run the following commands as r
 * Wifi: https://github.com/aircrack-ng
 * Bluetooth: https://github.com/bluez
 
+#Todo
+What if a Coumputer do not have Bluetooth? Normaly no porblem, but the bluetooth scann will never finish :(. I need to fix that!
