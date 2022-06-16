@@ -140,6 +140,18 @@ sleep 1
 echo -e '\e[33mDone'
 
 
+#Test if scanning with wi-fi is possible
+echo -e '\e[34m[*]      \e[32mTesting wi-fi                                \e[34m[*]\e[0m'
+WLAN=$(ip link show | awk '{print $2}' | grep "wlan" | sort -k 1,1 | tail -1)
+if [ "$WLAN" = "" ]; then
+  echo -e \[31m 'WARNING: Scanning with Wi-Fi is not possible!';
+  echo -e \[31m 'Note: If you are only scanning with Bluetooth, you do not need \nto start the wifi_start_scan.sh script!';
+else
+  WLAN=${WLAN%?}
+fi
+echo -e '\e[33mDone'
+
+
 #Test if scanning with bluetooth is possible
 echo -e '\e[34m[*]      \e[32mTesting bluetooth                                \e[34m[*]\e[0m'
 BLUE=$(dmesg | grep -i Bluetooth)
