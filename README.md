@@ -36,3 +36,6 @@ To ensure everything is working fine, you can run the following commands as root
 6) Go to the beginning of the line and type `#`. The line now should change the color and look like `#ToEnter`.
 7) Save the file and exit.
 8) Every time you would like to run the script again, remove the `#` in front of the line again and save the file. A `#` is used to comment out content. If the line in the crontab file is commented out, it will be ignored by crontab.
+
+#TODO
+setup.sh: Let the user choose between activate / deactivate cronjob and start full setup
