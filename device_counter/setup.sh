@@ -130,7 +130,7 @@ echo -e '\e[33mDone'
 
 
 #Check for backupfolder
-echo -e '\e[34m[*]      \e[32mCheck for backupfolder                         \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mCheck for backupfolder                            \e[34m[*]\e[0m'
 if ! [ -d "$LOCAT/btfinder/backups" ];then
    eval mkdir -v $LOCAT/btfinder/backups $VERB1;
 fi
@@ -146,7 +146,7 @@ echo -e '\e[33mDone'
 sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
 
 #Setting up new cronjob
-echo -e '\e[34m[*]      \e[32mSetting up Cronjob                   		\e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mSetting up Cronjob                                \e[34m[*]\e[0m'
 crontab -l > newcron
 echo "* * * * * "$LOCAT"/all_in_one.sh" >> newcron
 eval crontab newcron $VERB2
