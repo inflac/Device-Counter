@@ -37,7 +37,7 @@ if [ "$CONT" = "1" ]; then
   echo -e '\e[34m[*]      \e[32mActivating cronjob                   \e[34m[*]\e[0m'
   LOCAT=$(pwd);
   crontab -l > newcron;
-  echo "* * * * * ."$LOCAT"/all_in_one.sh" >> newcron;
+  echo "* * * * * "$LOCAT"/all_in_one.sh" >> newcron;
   crontab newcron;
   rm newcron;
   echo -e '\e[33mDone'
@@ -115,7 +115,7 @@ sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
 #Setting up new cronjob
 echo -e '\e[34m[*]      \e[32mSetting up Cronjob                   		\e[34m[*]\e[0m'
 crontab -l > newcron
-echo "* * * * * ."$LOCAT"/all_in_one.sh" >> newcron
+echo "* * * * * "$LOCAT"/all_in_one.sh" >> newcron
 eval crontab newcron $VERB2
 rm newcron
 sleep 1
