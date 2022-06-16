@@ -64,10 +64,10 @@ elif [ "$CONT" = "4" ]; then
     echo -e '\e[34m[*]      \e[32mClearing all captured Data                   \e[34m[*]\e[0m'
     sleep 1
     #Remove backups
-    if ! [ -d "/btfinder/backups" ];then
+    if [ -d "/btfinder/backups" ];then
       rm /btfinder/backups/*.txt
     fi
-    if ! [ -d "/wififinder/backups" ];then
+    if [ -d "/wififinder/backups" ];then
       rm /wififinder/backups/*.csv
     fi
     #Clear countedmacs.txt
