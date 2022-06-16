@@ -115,7 +115,7 @@ sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
 echo -e '\e[34m[*]      \e[32mSetting up Cronjob                   		\e[34m[*]\e[0m'
 crontab -l > newcron
 echo "* * * * * ."$LOCAT"/all_in_one.sh" >> newcron
-crontab newcron
+eval crontab newcron $VERB2
 rm newcron
 sleep 1
 echo -e '\e[33mDone'
