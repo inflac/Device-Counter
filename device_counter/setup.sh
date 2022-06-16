@@ -130,7 +130,7 @@ echo -e '\e[33mDone'
 
 
 #Check for backupfolder
-echo -e '\e[34m[*]      \e[32mCheck for backupfolder                          \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mCheck for backupfolder                         \e[34m[*]\e[0m'
 if ! [ -d "$LOCAT/btfinder/backups" ];then
    eval mkdir -v $LOCAT/btfinder/backups $VERB1;
 fi
