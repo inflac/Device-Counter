@@ -82,6 +82,7 @@ echo -e '\e[34m[*]      \e[32mAdjusting permissions				\e[34m[*]'
 eval chmod -v +x all_in_one.sh $VERB1
 eval chmod -v +x launch_website.sh $VERB1
 eval chmod -v +x wifi_start_scan.sh $VERB1
+eval chmod -v +x count_sorted.py $VERB1 
 sleep 1
 echo -e '\e[33mDone'
 
