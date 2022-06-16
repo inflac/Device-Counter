@@ -4,12 +4,16 @@ This script gives you the possibility to scan your surrounding for devices that 
 An example for the usage could be that you have a shop and would like to know how many people enter it per day. You just install a Raspberry Pi near the entrance. With a cronjob, you control when the scanner is active. With the cleanup tool, you can erase the data after every day, so the next day you can count again from zero.
 Now you sit in your office and open the web browser on your computer. You type in the IP:5000 of the Raspberry Pi and watch the number increasing :).
 
+![image](https://user-images.githubusercontent.com/74843899/174181705-dc685ad0-d937-4f64-bbe0-cefa2b7292ad.png)
+
 ## Problems
 * How do I count people who do not have any devices with them? Sure, the script can only count devices of people that have Wi-Fi and/or Bluetooth activated, but if you have a look at your phone right now, most people will see that at least one of the two things is turned on. That leads us to the second problem. 
 * What if people have Wi-Fi and Bluetooth activated? The answer is easy. They get counted twice! And yes, that leads to a false number of counted devices. The problem can be put into perspective in that not all people have Wi-Fi and/or Bluetooth activated and would not be counted at all. In addition, there is no guarantee that all devices will actually be detected. This could be due to slow hardware. For example, an older Raspberry Pi on which the script is running. It can therefore be assumed that people who are counted twice compensate not counted ones.
 * Don't the MAC-address of mobile devices change after some time? Because of many mobile devices have anti tracking mechanisms, they do not broadcast their real and unique MAC-address. Most often, mobile devices broadcast fake addresses that change after some time. But still the change rhythm is long enough to count a device only once if the scanner runs for example just a couple of hours. I've read that most devices of big brands only change their MAC addresses when they connect to new networks. Since you don't change your Wi-Fi/Bluetooth network very often in public spaces, changing MAC addresses shouldn't be a problem.
 
 ## Setup
+![image](https://user-images.githubusercontent.com/74843899/174178541-450b476c-3342-4e20-a652-f2eadfbb9293.png)
+
 To ensure everything is working fine, you should run the following commands as root.
 ### Steps needed to do once or after every path change:
 1) Place the folder "device_counter" into the file system. I like using "Desktop" of the user I'm logged into, but you can choose anyone.
@@ -39,7 +43,7 @@ To ensure everything is working fine, you should run the following commands as r
 5) Run the "setup.sh" script with `./setup.sh`.
 6) Choose "2" to deactivate the cronjob.
 
-# External ressources
+## External ressources
 * Ascii font generator: https://patorjk.com/software/taag/
 * Wifi: https://github.com/aircrack-ng
 * Bluetooth: https://github.com/bluez
