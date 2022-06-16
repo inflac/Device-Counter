@@ -25,15 +25,15 @@ echo '--> Edit content of the files in the folder "device_counter"'
 echo ''
 
 #Menue
-echo -e '\e[0m|---------------------------------------|'
-echo -e ' Main Menue:                         '
-echo -e ' \e[34m[1]\e[0m Activate Cronjob                '
-echo -e ' \e[34m[2]\e[0m Deactivate Cronjob              '
-echo -e ' \e[34m[3]\e[0m Start full setup                '
-echo -e ' \e[34m[4]\e[0m Start full setup in verbose mode               '
-echo -e '\e[0m|---------------------------------------|'
+echo -e '\e[0m|---------------------------------------|  '
+echo -e ' Main Menue:                                    '
+echo -e ' \e[34m[0]\e[0m Activate Cronjob                '
+echo -e ' \e[34m[1]\e[0m Deactivate Cronjob              '
+echo -e ' \e[34m[2]\e[0m Start full setup                '
+echo -e ' \e[34m[3]\e[0m Start full setup in verbose mode'
+echo -e '\e[0m|---------------------------------------|  '
 read -p 'Enter number:' CONT
-if [ "$CONT" = "1" ]; then
+if [ "$CONT" = "0" ]; then
   echo -e '\e[34m[*]      \e[32mActivating cronjob                   \e[34m[*]\e[0m'
   LOCAT=$(pwd);
   crontab -l > newcron;
@@ -43,20 +43,40 @@ if [ "$CONT" = "1" ]; then
   echo -e '\e[33mDone'
   sleep 1
   exit 130
-elif [ "$CONT" = "2" ]; then
+elif [ "$CONT" = "1" ]; then
   echo -e '\e[34m[*]      \e[32mDeactivating cronjob                   \e[34m[*]\e[0m'
   sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
   echo -e '\e[33mDone'
   sleep 1
   exit 130
-elif [ "$CONT" = "3" ]; then
+elif [ "$CONT" = "2" ]; then
   echo "Starting the full setup";
   VERB1=">/dev/null"
   VERB2="&>/dev/null"
-elif [ "$CONT" = "4" ]; then
+elif [ "$CONT" = "3" ]; then
   VERB1=''
   VERB2=''
   echo "Starting the full setup in verbose mode";
+elif [ "$CONT" = "4" ]; then
+  read -p 'Are you sure that you want to clear all captured data(y/n)?' VERY
+  if [ "$VERY" = "y" ]; then
+    echo -e '\e[34m[*]      \e[32mClearing all captured Data                   \e[34m[*]\e[0m'
+    sleep 1
+    #Remove backups
+    if ! [ -d "/btfinder/backups" ];then
+      eval rm -v /btfinder/backups/*.txt $VERB1
+    fi
+    if ! [ -d "/wififinder/backups" ];then
+      eval rm -v /wififinder/backups/*.csv $VERB1
+    fi
+    #Clear countedmacs.txt
+    sed -i -e 1c"0" countedmacs.txt
+    echo -e '\e[33mDone'
+    exit 130
+  else
+    echo -e '...Nothing happend'
+    exit 130
+  fi
 else
   echo ''
   echo -e '\e[31m########################################\e[0m'
