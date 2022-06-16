@@ -65,10 +65,10 @@ elif [ "$CONT" = "4" ]; then
     sleep 1
     #Remove backups
     if ! [ -d "/btfinder/backups" ];then
-      eval rm -v /btfinder/backups/*.txt $VERB1
+      rm /btfinder/backups/*.txt
     fi
     if ! [ -d "/wififinder/backups" ];then
-      eval rm -v /wififinder/backups/*.csv $VERB1
+      rm /wififinder/backups/*.csv
     fi
     #Clear countedmacs.txt
     sed -i -e 1c"0" countedmacs.txt
