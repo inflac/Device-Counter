@@ -38,3 +38,9 @@ To ensure everything is working fine, you should run the following commands as r
 4) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
 5) Run the "setup.sh" script with `./setup.sh`.
 6) Choose "2" to deactivate the cronjob.
+
+# External ressources
+* Ascii font generator: https://patorjk.com/software/taag/
+* Wifi: https://github.com/aircrack-ng
+* Bluetooth: https://github.com/bluez
+
