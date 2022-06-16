@@ -31,6 +31,7 @@ echo -e ' \e[34m[0]\e[0m Activate Cronjob                '
 echo -e ' \e[34m[1]\e[0m Deactivate Cronjob              '
 echo -e ' \e[34m[2]\e[0m Start full setup                '
 echo -e ' \e[34m[3]\e[0m Start full setup in verbose mode'
+echo -e ' \e[34m[4]\e[0m Clear captured Data             '
 echo -e '\e[0m|---------------------------------------|  '
 read -p 'Enter number:' CONT
 if [ "$CONT" = "0" ]; then
