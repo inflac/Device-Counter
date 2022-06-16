@@ -141,6 +141,22 @@ sleep 1
 echo -e '\e[33mDone'
 
 
+#Test if scanning with bluetooth is possible
+echo -e '\e[34m[*]      \e[32mTesting bluetooth                                \e[34m[*]\e[0m'
+BLUE=$(dmesg | grep -i Bluetooth)
+COMM=$(sed '3q;d' all_in_one.sh)
+if [ "$BLUE" = "" ]; then
+  if [ "$COMM" != "#" ]; then
+    sed -i '3s/^/#/' all_in_one.sh;
+  fi
+else
+  if [ "$COMM" = "#" ]; then
+    sed -i '3s/^.//' all_in_one.sh;
+  fi
+fi
+echo -e '\e[33mDone'
+
+
 ##Setting up cronjob
 #Removing old cronjob(The sed command realy removes every line with the matching string in it!)
 sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
