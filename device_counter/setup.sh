@@ -97,12 +97,12 @@ CURRPATH=$(sed '2q;d' all_in_one.sh)
 CURRPATH="${CURRPATH:1}"
 
 #Update current path with new path in all_in_one.sh
-eval replace -v "$CURRPATH" "$LOCAT" -- all_in_one.sh $VERB2
-eval replace -v "$CURRPATH" "$LOCAT" -- launch_website.sh $VERB2
-eval replace -v "$CURRPATH" "$LOCAT" -- wifi_start_scan.sh $VERB2
-eval replace -v "$CURRPATH" "$LOCAT" -- count_sorted.py $VERB2
+eval sed -i --debug "s,$CURRPATH,$LOCAT," all_in_one.sh $VERB2
+eval sed -i --debug "s,$CURRPATH,$LOCAT," launch_website.sh $VERB2
+eval sed -i --debug "s,$CURRPATH,$LOCAT," wifi_start_scan.sh $VERB2
+eval sed -i --debug "s,$CURRPATH,$LOCAT," count_sorted.py $VERB2
 cd web/
-eval replace -v "$CURRPATH" "$LOCAT" -- myapp.py $VERB2
+eval sed -i --debug "s,$CURRPATH,$LOCAT," myapp.py $VERB2
 sleep 1
 echo -e '\e[33mDone'
 
