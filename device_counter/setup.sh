@@ -109,7 +109,7 @@ echo -e '\e[33mDone'
 
 
 ##Adjusting path in files
-echo -e '\e[34m[*]      \e[32mAdjusting path in files			\e[34m[*]\e[0m'
+echo -e '\e[34m[*]	\e[32mAdjusting path in files				\e[34m[*]\e[0m'
 #Get path to update
 LOCAT=$(pwd)
 eval echo -e Using $LOCAT as the path to the device_counter folder $VERB1
@@ -129,7 +129,7 @@ echo -e '\e[33mDone'
 
 
 #Check for backupfolder
-echo -e '\e[34m[*]      \e[32mCheck for backupfolder                            \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mCheck for backupfolder				\e[34m[*]\e[0m'
 if ! [ -d "$LOCAT/btfinder/backups" ];then
    eval mkdir -v $LOCAT/btfinder/backups $VERB1;
 fi
@@ -141,19 +141,25 @@ echo -e '\e[33mDone'
 
 
 #Test if scanning with wi-fi is possible
-echo -e '\e[34m[*]      \e[32mTesting wi-fi                                \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mTesting wi-fi					\e[34m[*]\e[0m'
 WLAN=$(ip link show | awk '{print $2}' | grep "wlan" | sort -k 1,1 | tail -1)
 if [ "$WLAN" = "" ]; then
-  echo -e \[31m 'WARNING: Scanning with Wi-Fi is not possible!';
-  echo -e \[31m 'Note: If you are only scanning with Bluetooth, you do not need \nto start the wifi_start_scan.sh script!';
+  echo ''
+  echo ''
+  echo -e '\e[31mWARNING: Scanning with Wi-Fi is not possible!';
+  echo -e 'Note: If you are only scanning with Bluetooth, you do not need \nto start the wifi_start_scan.sh script!';
+  eval echo -e  'Reason: It wasnt possible to detect any Wi-Fi adapter. Please try to detache or deactivate the adapter and then reattach  or reactivate it.' $VERB1;
+  echo ''
+  echo ''
 else
   WLAN=${WLAN%?}
 fi
+sleep 1
 echo -e '\e[33mDone'
 
 
 #Test if scanning with bluetooth is possible
-echo -e '\e[34m[*]      \e[32mTesting bluetooth                                \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mTesting bluetooth				\e[34m[*]\e[0m'
 BLUE=$(dmesg | grep -i Bluetooth)
 COMM=$(sed '3q;d' all_in_one.sh)
 if [ "$BLUE" = "" ]; then
@@ -165,6 +171,7 @@ else
     sed -i '3s/^.//' all_in_one.sh;
   fi
 fi
+sleep 1
 echo -e '\e[33mDone'
 
 
@@ -173,7 +180,7 @@ echo -e '\e[33mDone'
 sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
 
 #Setting up new cronjob
-echo -e '\e[34m[*]      \e[32mSetting up Cronjob                                \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mSetting up Cronjob				\e[34m[*]\e[0m'
 crontab -l > newcron
 echo "* * * * * "$LOCAT"/all_in_one.sh" >> newcron
 eval crontab newcron $VERB2
