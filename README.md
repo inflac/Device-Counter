@@ -27,7 +27,7 @@ To ensure everything is working fine, you should run the following commands as r
 2) Open a command prompt.
 3) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
 4) If there is no cronjob running you can now start the "setup.sh" script with `setup.sh`.
-5) Choose "1" to activate the cronjob.
+5) Choose "0" to activate the cronjob.
 6) Then run the script wifi_start_scan.sh. You can do it with `./wifi_start_scan.sh`.
 7) The command prompt needs to run the whole time you're scanning.
 8) Open a new command prompt.
@@ -41,7 +41,7 @@ To ensure everything is working fine, you should run the following commands as r
 3) Open a command prompt.
 4) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
 5) Run the "setup.sh" script with `./setup.sh`.
-6) Choose "2" to deactivate the cronjob.
+6) Choose "1" to deactivate the cronjob.
 
 ## External ressources
 * Ascii font generator: https://patorjk.com/software/taag/
