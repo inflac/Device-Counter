@@ -26,7 +26,7 @@ To ensure everything is working fine, you should run the following commands as r
 1) To run the WI-FI Scanner, you will first have to plug in an external Wi-Fi adapter, for example via USB.
 2) Open a command prompt.
 3) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
-4) If there is no cronjob running you can now start the "setup.sh" script with `setup.sh`.
+4) If there is no cronjob running you can now start the "setup.sh" script with `./setup.sh`.
 5) Choose "0" to activate the cronjob.
 6) Then run the script wifi_start_scan.sh. You can do it with `./wifi_start_scan.sh`.
 7) The command prompt needs to run the whole time you're scanning.
