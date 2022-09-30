@@ -10,11 +10,11 @@ echo -e ''
 
 echo ''
 echo ''
-echo -e '\e[34m[*]      \e[32mDevice Counter                                                    \e[34m[*]'
-echo -e '\e[34m[*]      \e[32mVersion : 1.0                                                     \e[34m[*]'
-echo -e '\e[34m[*]      \e[32mReport Bugs : https://github.com/inflac/Device-Counter/issues     \e[34m[*]'
-echo -e '\e[34m[*]      \e[32mCreated By : \e[33mInflac                                         \e[34m[*]'
-echo -e '\e[34m[*]      \e[32mBased on '"'\e[36mAircrack-ng'"' \e[32m& '"'\e[36mBlue Control'"'                    >
+echo -e '\e[34m[*]	\e[32mDevice Counter							\e[34m[*]'
+echo -e '\e[34m[*]	\e[32mVersion : 1.0 							\e[34m[*]'
+echo -e '\e[34m[*]	\e[32mReport Bugs : https://github.com/inflac/Device-Counter/issues	\e[34m[*]'
+echo -e '\e[34m[*]	\e[32mCreated By : \e[33mInflac						\e[34m[*]'
+echo -e '\e[34m[*]	\e[32mBased on '"'\e[36mAircrack-ng'"' \e[32m& '"'\e[36mBlue Control'"'				\e[34m[*]'
 echo ''
 echo -e 'The Script will do the following things:'
 echo '--> Install aircrack-ng'
@@ -48,7 +48,7 @@ elif [[ $CONT == '2' ]]; then
   sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
   #stop wi-fi scanning
   eval pkill -e -f airodump-ng $VERB1
-    #stop flask
+  #stop flask
   eval pkill -e -f flask $VERB1
   #backup and move data
   actualtime=$(date +%T)
@@ -144,7 +144,7 @@ echo -e '\e[33mDone\e[0m'
 
 
 #Installing dependencies
-echo -e '\e[34m[*]      \e[32mInstalling dependencies                   \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mInstalling dependencies			\e[34m[*]\e[0m'
 if [[ -x "$(command -v apk)" ]];       then eval apk add --no-cache aircrack-ng -y $VERB1
  elif [[ -x "$(command -v apt-get)" ]]; then eval apt-get install aircrack-ng -y $VERB1
  elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1
@@ -157,14 +157,14 @@ echo -e '\e[33mDone\e[0m'
 
 #Test if scanning with wi-fi is possible
 startwifiscan='false'
-echo -e '\e[34m[*]      \e[32mTesting wi-fi                                     \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mTesting wi-fi					\e[34m[*]\e[0m'
 WLAN=$(ip link show | awk '{print $2}' | grep 'wlan' | sort -k 1,1 | tail -1)
 if [[ $WLAN == '' ]]; then
   echo -e '\e[31mWARNING: Scanning with Wi-Fi is not possible!';
   echo -e 'Note: If you are only scanning with Bluetooth, you can ignore this message.';
-  eval echo -e 'Reason: It wasnt possible to detect any Wi-Fi adapter. Please try to detache or deactivate the adap>
-  eval echo -e 'Hint: If you are sure that Wi-Fi scanning should be possible, you can try running the wifi_start_sc>
-  eval echo -e 'Do not close the terminal in which you started the skript, as it needs to run the whole time you wa>
+  eval echo -e 'Reason: It wasnt possible to detect any Wi-Fi adapter. Please try to detache or deactivate the adapter and then reattach  or reactivate it.' $VERB1;
+  eval echo -e 'Hint: If you are sure that Wi-Fi scanning should be possible, you can try running the wifi_start_scan.sh skript.' $VERB1;
+  eval echo -e 'Do not close the terminal in which you started the skript, as it needs to run the whole time you want to scan for devices.' $VERB1;
   sleep 1
 else
   eval echo -e 'using interface: $WLAN' $VERB1;
@@ -172,13 +172,14 @@ else
 fi
 echo -e '\e[33mDone\e[0m'
 
+
 #Start scanning with wi-fi
 echo -e '\e[34m[*]      \e[32mStart scanning with wi-fi                      \e[34m[*]\e[0m'
 if [[ $startwifiscan == 'true' ]]; then
   WLAN=$(airmon-ng | awk '{print $2}' | grep 'wlan' | sort -k 1,1 | tail -1)
   eval airmon-ng --verbose start $WLAN $VERB2
   sleep 1
-  nohup airodump-ng --berlin 60000 -w /home/kali/device_counter/wififinder/WIFICapture --channel 1-13,36-165 --writ>
+  nohup airodump-ng --berlin 60000 -w /home/kali/device_counter/wififinder/WIFICapture --channel 1-13,36-165 --write-interval 10 --output-format csv $WLAN &>/dev/null &
 else
   echo -e '\e[31mBecause Scanning with Wi-Fi is not possible as detected above'
   echo -e 'no scann was initialized!\e[0m'
@@ -188,7 +189,7 @@ echo -e '\e[33mDone\e[0m'
 
 
 #Test if scanning with bluetooth is possible
-echo -e '\e[34m[*]      \e[32mTesting bluetooth                         \e[34m[*]\e[0m'
+echo -e '\e[34m[*]      \e[32mTesting bluetooth				\e[34m[*]\e[0m'
 BLUE=$(dmesg | grep -i Bluetooth)
 COMM=$(sed -n 3p all_in_one.sh)
 if [[ $BLUE = '' ]]; then
@@ -197,9 +198,9 @@ if [[ $BLUE = '' ]]; then
   fi
   echo -e '\e[31mWARNING: Scanning with Bluetooth is not possible!';
   echo -e 'Note: If you are only scanning with Wi-Fi, you can ignore this message.';
-  eval echo -e 'Reason: It wasnt possible to detect any Bluetooth adapter. Please try to detache or deactivate the >
-  eval echo -e 'Function: The line for scanning with bluetooth in all_in_one.sh was deactivated by adding a \"#\" a>
-  eval echo -e 'If you want to debug the issue by yourself, you can try to manually reactivate the line by removing>
+  eval echo -e 'Reason: It wasnt possible to detect any Bluetooth adapter. Please try to detache or deactivate the adapter and then reattach  or reactivate it.' $VERB1;
+  eval echo -e 'Function: The line for scanning with bluetooth in all_in_one.sh was deactivated by adding a \"#\" at the beginning of the line.' $VERB1;
+  eval echo -e 'If you want to debug the issue by yourself, you can try to manually reactivate the line by removing the \"#\"' $VERB1;
   startblescan='false'
 else
   if [[ ${COMM::1} == '#' ]]; then
@@ -215,7 +216,7 @@ echo -e '\e[33mDone\e[0m'
   echo -e '\e[34m[*]      \e[32mSetting up Cronjob                              \e[34m[*]\e[0m'
 if [[ $startwifiscan == 'false' && $startblescan == 'false' ]]; then
   echo -e 'No Cronjob initilized'
-  eval echo -e 'Reason: Scanning with wifi and bluetooth is not possible, so there is no use for the all_in_one.sh >
+  eval echo -e 'Reason: Scanning with wifi and bluetooth is not possible, so there is no use for the all_in_one.sh skript.' $VERB1;
 else
   #Removing old cronjob(The sed command realy removes every line with the matching string in it!)
   sed -i '/all_in_one.sh/d' /var/spool/cron/crontabs/root
