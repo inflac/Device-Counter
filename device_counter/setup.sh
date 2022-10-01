@@ -113,7 +113,7 @@ eval echo -e Using $LOCAT as the path to the device_counter folder $VERB1
 
 #Read path of the all_in_one.sh file(line2).
 CURRPATH=$(sed '2q;d' all_in_one.sh)
-CURRPATH='${CURRPATH:1}'
+CURRPATH=${CURRPATH:1}
 
 #Update current path with new path in all_in_one.sh
 eval sed -i --debug 's,$CURRPATH,$LOCAT,' all_in_one.sh $VERB2
