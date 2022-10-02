@@ -179,7 +179,7 @@ if [[ $startwifiscan == 'true' ]]; then
   WLAN=$(airmon-ng | awk '{print $2}' | grep 'wlan' | sort -k 1,1 | tail -1)
   eval airmon-ng --verbose start $WLAN $VERB2
   sleep 1
-  nohup airodump-ng --berlin 60000 -w /home/kali/device_counter/wififinder/WIFICapture --channel 1-13,36-165 --write-interval 10 --output-format csv $WLAN &>/dev/null &
+  nohup airodump-ng --berlin 60000 -w $LOCAT/wififinder/WIFICapture --channel 1-13,36-165 --write-interval 10 --output-format csv $WLAN &>/dev/null &
 else
   echo -e '\e[31mBecause Scanning with Wi-Fi is not possible as detected above'
   echo -e 'no scann was initialized!\e[0m'
