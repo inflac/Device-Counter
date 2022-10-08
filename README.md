@@ -15,20 +15,19 @@ Now you sit in your office and open the web browser on your computer. You type i
 ![image](https://user-images.githubusercontent.com/74843899/194719421-3fe51715-c2d6-4c84-b63f-b1a29a73233a.png)
 
 To ensure everything is working fine, you should run the following commands as root.
-### Steps needed to do once or after every path change:
+### Steps needed to do once:
 1) Place the folder "device_counter" into the file system. I like using "Desktop" of the user I'm logged into, but you can choose anyone.
 2) Go into the folder "device_counter" with `cd` for example `cd /home/user/Desktop/device_counter`.
 3) Now change the permissions of the setup.sh file with `chmod +x setup.sh`.
-4) Start the Script setup.sh with `./setup.sh`
-5) After the script finished, you are ready to go.
 
-### Steps needed to do every time:
-1) To run the WI-FI Scanner, you will first have to plug in an external Wi-Fi adapter, for example via USB.
-2) Open a command prompt.
-3) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
-4) Now start the "setup.sh" script with `./setup.sh`.
-5) Choose "0" to start a scan.
-6) To see the Website, go to 127.0.0.1:5000 on your machine or in your network, go to the IP:5000 of the device the counter is running on.
+### Steps needed to start a scan:
+1) To successfully run a WI-FI Scan, you will first have to plug in an external Wi-Fi adapter, for example via USB.
+2) To successfully run a Bluetooth Scan, your device needs Bluetooth, via internal or external adapter.
+3) Open a command prompt.
+4) Move into the "device_counter" folder with `cd` for example `cd /home/user/Desktop/device_counter`.
+5) Now start the "setup.sh" script with `./setup.sh`.
+6) Choose "0" to start a scan.
+7) To see the Website, go to 127.0.0.1:5000 on your machine or in your network, go to the IP:5000 of the device the counter is running on.
 11) Congratulations, you're done and now counting the devices in your area.
 
 ### How to stop scanning?
