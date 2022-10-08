@@ -41,3 +41,8 @@ To ensure everything is working fine, you should run the following commands as r
 * Ascii font generator: https://patorjk.com/software/taag/
 * Wifi: https://github.com/aircrack-ng
 * Bluetooth: https://github.com/bluez
+
+## Todo:
+* Add MAC Vendor Database
+* Cleanup Code
+* super secret operation things xD 
