@@ -324,7 +324,7 @@ echo -e '\e[33mDone'
 #Move scan results to backups
 echo -e '\e[34m[*]      \e[32mMove scan results                              \e[34m[*]\e[0m'
 actualtime=$(date +%T)
-mv $LOCAT/wififinder/WIFICapture-01.csv $LOCAT/wififinder/backups/WIFICapture-$actualtime.csv
+eval mv $LOCAT/wififinder/WIFICapture-01.csv $LOCAT/wififinder/backups/WIFICapture-$actualtime.csv $VERB2
 sleep 1
 echo -e '\e[33mDone\e[0m'
 
