@@ -1,4 +1,54 @@
 #!/bin/bash
+
+##Global needed things
+#get current path
+LOCAT=$(pwd)
+
+#Progressbar constructor
+prog_setup() {
+  # Progress bar variables
+  prog_percent=$1
+  prog_symbol="$2"
+
+  prog_width=96
+  prog_delimiter=$prog_percent
+  while [ $(($prog_width + 20)) -gt $(tput cols) ]; do
+    prog_width=$(($prog_width / 2))
+    prog_delimiter=$(($prog_delimiter * 2))
+  done
+
+  prog_count=$prog_width
+  while [ $1 -lt $prog_count ]; do
+    prog_delimiter=$(($prog_delimiter * 2))
+    prog_symbol="$prog_symbol$prog_symbol"
+    prog_count=$(($prog_count / 2))
+  done
+
+  prog_bar=""
+  prog_completion_old=0
+
+  printf "\033[1;032mProgress:\033[0m\033[s [\033[${prog_width}C] 0%%"
+  prog_width=$(($prog_width + 1))
+}
+
+prog_update() {
+  prog_count=$(($1 * 100))
+  prog_completion=$(($prog_count / $prog_percent))
+
+  if [ $prog_completion -ne $prog_completion_old ]; then
+    if [ $prog_completion -lt 101 ]; then
+      prog_bar=$(printf "%0.s${prog_symbol}" $(seq -s " " 1 $(($prog_count / $prog_delimiter))))
+    else
+      prog_completion=100
+      prog_bar=$(printf "%0.s${prog_symbol}" $(seq -s " " 1 $(($((prog_percent * 100)) / prog_delimiter))))
+    fi
+    prog_completion_old=$prog_completion
+  fi
+
+  printf "\033[u [$prog_bar\033[u \033[${prog_width}C] $prog_completion%%"
+}
+
+
 ##intro
 echo -e '     _            _                                  _            '
 echo -e '    | |          (_)                                | |           '
@@ -30,18 +80,19 @@ echo -e ' Main Menue:                                    '
 echo -e ' \e[34m[0]\e[0m Start full setup                '
 echo -e ' \e[34m[1]\e[0m Start full setup in verbose mode'
 echo -e ' \e[34m[2]\e[0m Stop scanning                   '
-echo -e ' \e[34m[3]\e[0m Clear captured Data             '
+echo -e ' \e[34m[3]\e[0m Analyse Data                    '
+echo -e ' \e[34m[4]\e[0m Restore Data                    '
+echo -e ' \e[34m[5]\e[0m Clear captured Data             '
 echo -e '\e[0m|---------------------------------------|  '
-LOCAT=$(pwd)
 read -p 'Enter number:' CONT
 if [[ $CONT == '0' ]]; then
-  echo 'Starting the full setup';
+  echo 'Starting the full setup'
   VERB1='>/dev/null'
   VERB2='&>/dev/null'
 elif [[ $CONT == '1' ]]; then
   VERB1=''
   VERB2=''
-  echo 'Starting the full setup in verbose mode';
+  echo 'Starting the full setup in verbose mode'
 elif [[ $CONT == '2' ]]; then
   echo -e '\e[34m[*]      \e[32mStop scanning                   \e[34m[*]\e[0m'
   #stoping the cronjob
@@ -57,6 +108,142 @@ elif [[ $CONT == '2' ]]; then
   sleep 1
   exit 130
 elif [[ $CONT == '3' ]]; then
+  echo -e '\e[34m[*]      \e[32mAnalyse Data                       \e[34m[*]\e[0m'
+  #Analyze the MAC addresses based on the prefix
+  read -p 'Output the analyzed data to a file(y/n)?' CHECKANALYSE
+  if [[ $CHECKANALYSE == 'Y' || $CHECKANALYSE == 'y' ]]; then
+    actualtime=$(date +%T)
+    touch $LOCAT/analyse_result_$actualtime.txt
+    OUTPUTANALYSE=">>$LOCAT/analyse_result_$actualtime.txt"
+    echo $OUTPUTANALYSE
+  else
+    OUTPUTANALYSE='>/dev/null'
+    echo $OUTPUTANALYSE
+  fi
+  line=1
+  error='false'
+  COUNTLINES=$(cat $LOCAT/sorted_macs.txt | wc -l)
+  prog_setup $COUNTLINES "#"
+  while read macs; do
+    brand=$(grep ${macs::8} mac-vendors-export.csv)
+    if [[ -z $brand ]]; then
+      brand='\e[31mno vendor found - this looks like the MAC is nott valid.\e[0m'
+    fi
+
+    #check uniq/locally administrated(7th-bit)
+    CHAR=${macs:1:1}
+    managed='        \e[31mERROR\e[0m        '
+    if [[ $CHAR == '0' || $CHAR == '1' || $CHAR == '4' || $CHAR == '5' || $CHAR == '8' || $CHAR == '9' || $CHAR == 'C' || $CHAR == 'c' || $CHAR == 'D' || $CHAR == 'd' ]]; then
+      managed='uniq                 '
+    elif [[ $CHAR == '2' || $CHAR == '3' || $CHAR == '6' || $CHAR == '7' || $CHAR == 'A' || $CHAR == 'a' || $CHAR == 'B' || $CHAR == 'b' || $CHAR == 'E' || $CHAR == 'e' || $CHAR == 'F' || $CHAR == 'f' ]]; then
+      managed='locally administrated'
+    else
+      error='true'
+    fi
+
+    #check unicast/multicast(8th-bit)
+    cast='  \e[31mERROR\e[0m  '
+    if [[ $CHAR == '0' || $CHAR == '2' || $CHAR == '4' || $CHAR == '6' || $CHAR == '8' || $CHAR == 'A' || $CHAR == 'a' || $CHAR == 'C' || $CHAR == 'c' || $CHAR == 'E' || $CHAR == 'e' ]]; then
+      cast='unicast  '
+    elif [[ $CHAR == '1' || $CHAR == '3' || $CHAR == '5' || $CHAR == '7' || $CHAR == '9' || $CHAR == 'B' || $CHAR == 'b' || $CHAR == 'D' || $CHAR == 'd' || $CHAR == 'F' || $CHAR == 'f' ]]; then
+      cast='multicast'
+    else
+      error='true'
+    fi
+
+    #output
+    lenmac=${#macs}
+    if [[ -z $CHAR ]]; then
+      eval echo -e "\e[31mERROR: whitespace detected - can not continue! Please remove whitespace from document(line: $line)\e[0m" $OUTPUTANALYSE
+    elif [[ $lenmac -gt 17 || $lenmac -lt 17 || $error == 'true' ]]; then
+      eval echo -e "\e[31m$macs\e[0m |         \e[31mERROR\e[0m         |   \e[31mERROR\e[0m   | $brand\e[0m" $OUTPUTANALYSE
+    else
+      eval echo -e "$macs \| $managed \| $cast \| ${brand@Q}" $OUTPUTANALYSE
+    fi
+
+    line=$((line+1))
+    if [[ $CHECKANALYSE == "Y" || $CHECKANALYSE == "y" ]]; then
+      prog_update $line
+    else
+      echo -e "$macs | $managed | $cast | $brand"
+    fi
+    done <sorted_macs.txt
+
+  exit 130
+elif [[ $CONT == '4' ]]; then
+  #restore Data
+  echo -e '\e[0m|---------------------------------------|  '
+  echo -e ' Restore Menue:                                 '
+  echo -e ' \e[34m[0]\e[0m Choose backup file              '
+  echo -e ' \e[34m[1]\e[0m Unite all backup files          '
+  echo -e '\e[0m|---------------------------------------|  '
+  read -p 'Enter number:' ROPTION
+  if [[ $ROPTION == '0' ]]; then
+    read -p 'Data in the sorted_macs.txt files will be overwritten. Want to proceed(y/n)?' CHECK
+    if [[ $CHECK == 'y' || $CHECK == 'Y' ]]; then
+      echo -e '\e[34m[*]      \e[32mRestoring Data                       \e[34m[*]\e[0m'
+      BACKUPSELECTED='false'
+      read -p 'Name of backup file [WIFI]:' BACKUPFILEWIFI
+      echo $LOCAT'/wififinder/'$BACKUPFILEWIFI
+      if [[ -f $LOCAT'/wififinder/backups/'$BACKUPFILEWIFI ]]; then
+        if [[ -s $LOCAT'/wififinder/backups/'$BACKUPFILEWIFI ]]; then
+          BACKUPWIFISELECTED='true'
+          rm -f $LOCAT'/wififinder/sorted_macs.txt' && touch $LOCAT'/wififinder/sorted_macs.txt'
+          grep -o -E "([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}" $LOCAT'/wififinder/backups/'$BACKUPFILEWIFI >> $LOCAT'/wififinder/sorted_macs.txt'
+        else
+          echo -e 'The selected file is empty, nothing was done...'
+        fi
+      else
+        echo -e 'The selected file do not exist, nothing was done ...'
+      fi
+      read -p 'Name of backup file [BLUETOOTH]:' BACKUPFILEBLE
+      if [[ -f $LOCAT'/btfinder/backups/'$BACKUPFILEBLE ]]; then
+        if [[ -s $LOCAT'/btfinder/backups'$BACKUPFILEBLE ]]; then
+          rm -f $LOCAT'/btfinder/sorted_macs.txt' && touch $LOCAT'/btfinder/sorted_macs.txt'
+          grep -o -E "([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}" $BACKUPFILEBLE >> $LOCAT'/btfinder/sorted_macs.txt'
+        else
+          if [[ $BACKUPWIFISELECTED == 'true' && -z $BACKUPFILEBLE ]]; then
+            echo -e 'No bluetooth backup file selected! Now processing the selected wifi file'
+          else
+            echo -e 'The selected file is empty, nothing was done...'
+          fi
+        fi
+      else
+        if [[ $BACKUPWIFISELECTED == 'true' && -z $BACKUPFILEBLE ]]; then
+          echo -e 'No bluetooth backup file selected! Now processing the selected wifi file'
+        else
+          echo -e 'The selected file do not exist, nothing was done ...'
+        fi
+      fi
+      echo -e '\e[33mDone\e[0m'
+      exit 130
+    else
+      echo -e '...Nothing happend'
+      exit 130
+    fi
+  elif [[ $ROPTION == '1' ]]; then
+    echo -e '\e[34m[*]      \e[32mRestoring Data                       \e[34m[*]\e[0m'
+    COUNTFILES=$(ls $LOCAT/wififinder/backups | wc -l)
+    prog_setup $COUNTFILES "#"
+    if [[ ! -f $LOCAT'/wififinder/sorted_macs.txt' ]]; then
+      touch $LOCAT'/wififinder/sorted_macs.txt'
+    fi
+    for FILENAME in $LOCAT/wififinder/backups/*.csv; do
+      i=$((i+1))
+      touch $LOCAT/wififinder/tmp.txt
+      grep -o -E "([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}" $FILENAME >> $LOCAT'/wififinder/tmp.txt'
+      while IFS= read -r LINE; do
+        if ! grep -Fxq $LINE $LOCAT/wififinder/sorted_macs.txt; then
+          echo $LINE >> $LOCAT/wififinder/sorted_macs.txt
+        fi
+      done < $LOCAT'/wififinder/tmp.txt'
+      rm $LOCAT'/wififinder/tmp.txt'
+      prog_update $i
+    done
+    echo -e '\n\e[33mDone\e[0m'
+    exit 130
+  fi
+elif [[ $CONT == '5' ]]; then
   read -p 'Are you sure that you want to clear all captured data(y/n)?' VERY
   if [[ $VERY == 'y' ]]; then
     echo -e '\e[34m[*]      \e[32mClearing all captured Data                   \e[34m[*]\e[0m'
@@ -89,7 +276,6 @@ else
   telnet towel.blinkenlights.nl
 fi
 
-
 #Stop running scans
 echo -e '\e[34m[*]      \e[32mKill running scans                             \e[34m[*]\e[0m'
 eval pkill -e -f airodump-ng $VERB1
@@ -103,7 +289,7 @@ echo -e '\e[34m[*]      \e[32mAdjusting permissions                          \e[
 eval chmod -v +x all_in_one.sh $VERB1
 eval chmod -v +x count_sorted.py $VERB1
 sleep 1
-echo -e '\e[33mDone'
+echo -e '\e[33mDone\e[0m'
 
 
 ##Adjusting path in files
@@ -146,10 +332,10 @@ echo -e '\e[33mDone\e[0m'
 #Installing dependencies
 echo -e '\e[34m[*]      \e[32mInstalling dependencies			\e[34m[*]\e[0m'
 if [[ -x "$(command -v apk)" ]];       then eval apk add --no-cache aircrack-ng -y $VERB1
- elif [[ -x "$(command -v apt-get)" ]]; then eval apt-get install aircrack-ng -y $VERB1
- elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1
- elif [[ -x "$(command -v zypper)" ]];  then eval zypper install aircrack-ng -y $VERB1
- else echo 'FAILD TO INSTALL PACKAGE: Package manager not found. You must manually install: aircrack-ng'
+elif [[ -x "$(command -v apt-get)" ]]; then eval apt-get install aircrack-ng -y $VERB1
+elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1
+elif [[ -x "$(command -v zypper)" ]];  then eval zypper install aircrack-ng -y $VERB1
+else echo 'FAILD TO INSTALL PACKAGE: Package manager not found. You must manually install: aircrack-ng'
 fi
 eval pip install -U -v Flask $VERB2
 echo -e '\e[33mDone\e[0m'
@@ -232,7 +418,7 @@ echo -e '\e[33mDone\e[0m'
 
 echo -e '\e[34m[*]      \e[32mStart the web application                      \e[34m[*]\e[0m'
 if [[ $startwifiscan == 'false' && $startblescan == 'false' ]]; then
-  read -p 'Neither wi-fi nor bluetooth scanning is possible. Do you want to start the website anyway(y/n)?' STARTWEB
+  read -p "Neither wi-fi nor bluetooth scanning is possible. Do you want to start the website anyway(y/n)?" STARTWEB
   if [[ $STARTWEB == 'n' || $STARTWEB == 'N' ]]; then
     echo -e 'Website not launched'
   elif [[ $STARTWEB == 'y' || $STARTWEB == 'Y' ]]; then
