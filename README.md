@@ -40,6 +40,11 @@ To ensure everything is working fine, you should run the following commands as r
 3) Run the "setup.sh" script with `./setup.sh`.
 4) Choose "2" to stop the scan.
 
+### How to analyse data?
+1) Choose a sorted_macs.txt file from "wififinder/" or "btfinder/" and copy it to the "device_counter/" folder.
+2) Copy latest wifi data: `cp wififinder/sorted_macs.txt ../`
+3) Start "setup.sh" with `./setup.sh` and use option "3" in the main menu.
+
 ## External ressources
 * Ascii font generator: https://patorjk.com/software/taag/
 * Wifi: https://github.com/aircrack-ng
@@ -47,5 +52,6 @@ To ensure everything is working fine, you should run the following commands as r
 
 ## Todo:
 * Add MAC Vendor Database
+* Update data analyse option.
 * Cleanup Code
 * super secret operation things xD 
