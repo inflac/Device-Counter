@@ -15,6 +15,10 @@ Now you sit in your office and open the web browser on your computer. You type i
 ![image](https://user-images.githubusercontent.com/74843899/194719421-3fe51715-c2d6-4c84-b63f-b1a29a73233a.png)
 
 To ensure everything is working fine, you should run the following commands as root.
+
+### Requirements
+* Python3 - For the "advanced packaging tool", short apt, you can type `apt install python3`
+
 ### Steps needed to do once:
 1) Place the folder "device_counter" into the file system. I like using "Desktop" of the user I'm logged into, but you can choose anyone.
 2) Go into the folder "device_counter" with `cd` for example `cd /home/user/Desktop/device_counter`.
