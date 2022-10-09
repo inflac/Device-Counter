@@ -67,8 +67,7 @@ echo -e '\e[34m[*]	\e[32mCreated By : \e[33mInflac						\e[34m[*]'
 echo -e '\e[34m[*]	\e[32mBased on '"'\e[36mAircrack-ng'"' \e[32m& '"'\e[36mBlue Control'"'				\e[34m[*]'
 echo ''
 echo -e 'The Script will do the following things:'
-echo '--> Install aircrack-ng'
-echo '--> Install flask'
+echo '--> Install aircrack-ng, flask and python3-pip'
 echo '--> Change permissions of the files in the folder "device_counter"'
 echo '--> Edit content of the files in the folder "device_counter"'
 echo '--> Setup Cronjob for all_in_one.sh'
@@ -331,13 +330,14 @@ echo -e '\e[33mDone\e[0m'
 
 #Installing dependencies
 echo -e '\e[34m[*]      \e[32mInstalling dependencies			\e[34m[*]\e[0m'
-if [[ -x "$(command -v apk)" ]];       then eval apk add --no-cache aircrack-ng -y $VERB1
-elif [[ -x "$(command -v apt-get)" ]]; then eval apt-get install aircrack-ng -y $VERB1
-elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1
-elif [[ -x "$(command -v zypper)" ]];  then eval zypper install aircrack-ng -y $VERB1
+if [[ -x "$(command -v apk)" ]];       then eval apk add --no-cache aircrack-ng -y $VERB1 && apk add --no-chache python3-pip -y $VERB1
+elif [[ -x "$(command -v apt-get)" ]]; then eval apt install aircrack-ng -y $VERB1 && eval apt install python3-pip -y $VERB1
+elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1 && eval dnf install python3-pip -y $VERB1
+elif [[ -x "$(command -v zypper)" ]];  then eval zypper install aircrack-ng -y $VERB1 && eval zypper install python3-pip -y $VERB1
 else echo 'FAILD TO INSTALL PACKAGE: Package manager not found. You must manually install: aircrack-ng'
 fi
-eval pip install -U -v Flask $VERB2
+eval 
+eval pip3 install -U -v Flask $VERB2
 echo -e '\e[33mDone\e[0m'
 
 
