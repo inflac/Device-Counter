@@ -12,7 +12,7 @@ Now you sit in your office and open the web browser on your computer. You type i
 * Don't the MAC-address of mobile devices change after some time? Because of many mobile devices have anti tracking mechanisms, they do not broadcast their real and unique MAC-address. Most often, mobile devices broadcast fake addresses that change after some time. But still the change rhythm is long enough to count a device only once if the scanner runs for example just a couple of hours. I've read that most devices of big brands only change their MAC addresses when they connect to new networks. Since you don't change your Wi-Fi/Bluetooth network very often in public spaces, changing MAC addresses shouldn't be a problem.
 
 ## Setup
-![image](https://user-images.githubusercontent.com/74843899/194719421-3fe51715-c2d6-4c84-b63f-b1a29a73233a.png)
+![image](https://user-images.githubusercontent.com/74843899/194777368-422fa027-83a3-49ac-9acc-74d4340f1001.png)
 
 To ensure everything is working fine, you should run the following commands as root.
 
