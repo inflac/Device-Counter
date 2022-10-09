@@ -331,7 +331,7 @@ echo -e '\e[33mDone\e[0m'
 #Installing dependencies
 echo -e '\e[34m[*]      \e[32mInstalling dependencies			\e[34m[*]\e[0m'
 if [[ -x "$(command -v apk)" ]];       then eval apk add --no-cache aircrack-ng -y $VERB1 && apk add --no-chache python3-pip -y $VERB1
-elif [[ -x "$(command -v apt-get)" ]]; then eval apt install aircrack-ng -y $VERB1 && eval apt install python3-pip -y $VERB1
+elif [[ -x "$(command -v apt-get)" ]]; then eval apt install aircrack-ng -y $VERB2 && eval apt install python3-pip -y $VERB2
 elif [[ -x "$(command -v dnf)" ]];     then eval dnf install aircrack-ng -y $VERB1 && eval dnf install python3-pip -y $VERB1
 elif [[ -x "$(command -v zypper)" ]];  then eval zypper install aircrack-ng -y $VERB1 && eval zypper install python3-pip -y $VERB1
 else echo 'FAILD TO INSTALL PACKAGE: Package manager not found. You must manually install: aircrack-ng'
