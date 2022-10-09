@@ -40,10 +40,13 @@ To ensure everything is working fine, you should run the following commands as r
 3) Run the "setup.sh" script with `./setup.sh`.
 4) Choose "2" to stop the scan.
 
-### How to analyse data?
+### How to analyse data? (!currently unavailable!)
 1) Choose a sorted_macs.txt file from "wififinder/" or "btfinder/" and copy it to the "device_counter/" folder.
 2) Copy latest wifi data: `cp wififinder/sorted_macs.txt ../`
 3) Start "setup.sh" with `./setup.sh` and use option "3" in the main menu.
+4) The option is currently unavailable because i don't have permission to upload the MAC vendor database to GitHub. I contacted the creator of a realy good one and now wait for a response. If you need to use the analyse option, install the database yourself(check "5" etc.)
+5) Visit https://maclookup.app/downloads/csv-database and place the file in the "device_counter" folder. If you can only use a terminal, try it for example with wget.
+6) wget -O mac-vendors-export.csv "https://maclookup.app/downloads/csv-database/get-db?t=22-10-09&h=efb2ec1cc5735e8d3e778705aad166202ee3a309"
 
 ## External ressources
 * Ascii font generator: https://patorjk.com/software/taag/
