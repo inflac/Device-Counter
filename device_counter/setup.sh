@@ -228,6 +228,10 @@ elif [[ $CONT == '4' ]]; then
   elif [[ $ROPTION == '1' ]]; then
     echo -e '\e[34m[*]      \e[32mRestoring Data                       \e[34m[*]\e[0m'
     COUNTFILES=$(ls $LOCAT/wififinder/backups | wc -l)
+    if [[ $COUNTFILES == '0' ]]; then
+      echo -e 'No wifi backup found in /wififinder/backups. Nothing happend...'
+      exit 130
+    fi
     prog_setup $COUNTFILES "#"
     if [[ ! -f $LOCAT'/wififinder/sorted_macs.txt' ]]; then
       touch $LOCAT'/wififinder/sorted_macs.txt'
