@@ -109,6 +109,11 @@ elif [[ $CONT == '2' ]]; then
 elif [[ $CONT == '3' ]]; then
   echo -e '\e[34m[*]      \e[32mAnalyse Data                       \e[34m[*]\e[0m'
   #Analyze the MAC addresses based on the prefix
+  read -p 'Enter the name of the file you would like to analys(../device_counter/):' FILENAMEANALYSE
+  if [[ ! -f $LOCAT/$FILENAMEANALYSE  ]]; then
+    echo -e 'File not found, nothing happend...'
+    exit 130
+  fi
   read -p 'Output the analyzed data to a file(y/n)?' CHECKANALYSE
   if [[ $CHECKANALYSE == 'Y' || $CHECKANALYSE == 'y' ]]; then
     actualtime=$(date +%T)
@@ -166,7 +171,7 @@ elif [[ $CONT == '3' ]]; then
     else
       echo -e "$macs | $managed | $cast | $brand"
     fi
-    done <sorted_macs.txt
+    done <$FILENAMEANALYSE
 
   exit 130
 elif [[ $CONT == '4' ]]; then
