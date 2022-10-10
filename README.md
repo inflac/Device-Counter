@@ -53,6 +53,6 @@ To ensure everything is working fine, you should run the following commands as r
 
 
 ## Todo:
-* Update data analyse option.
+* Add restore function for Bluetooth backups
 * Cleanup Code
 * super secret operation things xD 
