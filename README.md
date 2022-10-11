@@ -53,6 +53,7 @@ To ensure everything is working fine, you should run the following commands as r
 
 
 ## Todo:
-* Add restore function for Bluetooth backups
-* Cleanup Code
+* Add function that detects running scans
+* Cleanup code
+* Testing
 * super secret operation things xD 
