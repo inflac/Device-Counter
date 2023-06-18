@@ -129,12 +129,12 @@ elif [[ $main_menu_option == '3' ]]; then
   fi
   line=1
   error='false'
-  count_lines=$(cat $path/sorted_macs.txt | wc -l)
+  count_lines=$(cat $path/$analyse_file_to_analyse | wc -l)
   progress_setup $count_lines "#"
   while read macs; do
     brand=$(grep ${macs::8} mac-vendors-export.csv)
     if [[ -z $brand ]]; then
-      brand='\e[31mno vendor found - this looks like the MAC is nott valid.\e[0m'
+      brand='\e[31mno vendor found - this looks like the MAC is not valid.\e[0m'
     fi
 
     #check uniq/locally administrated(7th-bit)
