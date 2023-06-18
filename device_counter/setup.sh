@@ -378,7 +378,7 @@ echo -e '\e[33mDone\e[0m'
 
 
 #Adjusting permissions
-echo -e '\e[34m[*]      \e[32mAdjusting permissions                          \e[34m[*]'
+echo -e '\e[34m[*]      \e[32mAdjusting permissions                          \e[34m[*]\e[0m'
 eval chmod -v +x all_in_one.sh $verbose1
 eval chmod -v +x count_sorted.py $verbose1
 sleep 1
@@ -395,9 +395,9 @@ CURRPATH=$(sed '2q;d' all_in_one.sh)
 CURRPATH=${CURRPATH:1}
 
 #Update current path with new path in all_in_one.sh
-eval sed -i --debug 's,$CURRPATH,$path,' all_in_one.sh $verbose2
-eval sed -i --debug 's,$CURRPATH,$path,' count_sorted.py $verbose2
-eval sed -i --debug 's,$CURRPATH,$path,' web/myapp.py $verbose2
+eval sed -i 's,$CURRPATH,$path,' all_in_one.sh $verbose2
+eval sed -i 's,$CURRPATH,$path,' count_sorted.py $verbose2
+eval sed -i 's,$CURRPATH,$path,' web/myapp.py $verbose2
 sleep 1
 echo -e '\e[33mDone'
 
@@ -406,9 +406,13 @@ echo -e '\e[33mDone'
 echo -e '\e[34m[*]      \e[32mCheck for backupfolder                         \e[34m[*]\e[0m'
 if ! [[ -d $path'/btfinder/backups' ]];then
    eval mkdir -v $path/btfinder/backups $verbose1;
+else
+  eval echo -e 'Backupfolder[Wi-Fi] found' $verbose1
 fi
 if ! [[ -d $path'/wififinder/backups' ]];then
    eval mkdir -v $path/wififinder/backups $verbose1;
+else
+  eval echo -e 'Backupfolder[Bluetooth] found' $verbose1
 fi
 sleep 1
 echo -e '\e[33mDone'
